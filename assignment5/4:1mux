@@ -1,0 +1,10 @@
+module mux4to1 (
+    input wire [1:0] sel,  // 2-bit select input
+    input wire a, b, c, d, // 4 data inputs
+    output wire y          // Output
+);
+    assign y = (sel == 2'b00) ? a :
+               (sel == 2'b01) ? b :
+               (sel == 2'b10) ? c :
+                               d;
+endmodule
