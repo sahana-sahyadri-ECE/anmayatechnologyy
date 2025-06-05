@@ -1,0 +1,44 @@
+`timescale 1ns/1ps
+
+module tb_up_down_counter;
+    reg clk;
+    reg reset;
+    reg up_down;
+    wire [3:0] count;
+
+    // Instantiate counter
+    up_down_counter uut (
+        .clk(clk),
+        .reset(reset),
+        .up_down(up_down),
+        .count(count)
+    );
+
+    // Clock generation: Toggle every 5ns (10ns period = 100 MHz)
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+
+    initial begin
+        // Setup waveform
+        $dumpfile("dump.vcd");
+        $dumpvars(0, tb_up_down_counter);
+
+        // Initialize
+        reset = 1; up_down = 1; #10;
+        reset = 0;
+
+        // Count up
+        up_down = 1; #50;
+
+        // Count down
+        up_down = 0; #50;
+
+        // Reset again
+        reset = 1; #10;
+        reset = 0; #10;
+
+        $finish;
+    end
+endmodule
